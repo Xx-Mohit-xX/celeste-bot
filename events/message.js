@@ -30,7 +30,7 @@ module.exports = (client, distube, message) => {
             client.cooldowns[message.guild.id][commandName] = {};
           }
           if (client.cooldowns[message.guild.id][commandName][message.author.id]) {
-            message.channel.send(`You're in cooldown.${msToString(config.cooldowns[commandName] - (Date.now() - client.cooldowns[message.guild.id][commandName][message.author.id]))}`);
+            message.channel.send(`You're on cooldown.${msToString(config.cooldowns[commandName] - (Date.now() - client.cooldowns[message.guild.id][commandName][message.author.id]))}`);
             return;
           }
           client.cooldowns[message.guild.id][commandName][message.author.id] = Date.now();
