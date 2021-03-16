@@ -1,18 +1,22 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable no-restricted-syntax */
 // This is the starting point of the bot
 const { Client, Collection } = require('discord.js');
 const fs = require('fs');
+const DisTube = require('distube');
+const { Player } = require('discord-music-player');
+
 const { token } = require('./config');
+const distubeListeners = require('./utils/music/distubeListeners');
 
 const client = new Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER'] });
 client.commands = new Collection();
 
-const { Player } = require("discord-music-player");
+const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
+
+const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || 'Off'}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? 'All Queue' : 'This Song' : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
+distubeListeners(distube, status);
 
 const player = new Player(client, {
-    leaveOnEmpty: true, // This options are optional.
+  leaveOnEmpty: true, // This options are optional.
 });
 
 client.player = player;
@@ -50,7 +54,7 @@ fs.readdir('./events/', (err, files) => {
     const evt = require(`./events/${file}`);
     const evtName = file.split('.')[0];
     console.log(`Event: ${evtName} loaded!`);
-    client.on(evtName, evt.bind(null, client));
+    client.on(evtName, (...args) => evt(client, distube, ...args));
   });
 });
 client.login(token);
