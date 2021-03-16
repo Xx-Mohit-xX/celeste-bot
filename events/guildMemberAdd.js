@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 const generateWelcome = require('../utils/generateWelcome');
 
-module.exports = async (client, member) => {
-
+module.exports = async (client, distube, member) => {
   const attachment = await generateWelcome(member.user, member.guild);
   const welcomeChannel = member.guild.channels.cache.get(client.guildConfig[member.guild.id] ? client.guildConfig[member.guild.id].channels.welcomeChannel : null);
   if (welcomeChannel) {
