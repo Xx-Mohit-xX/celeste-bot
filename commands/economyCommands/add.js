@@ -26,7 +26,7 @@ module.exports = {
     .setColor('#5b4194')
     .setDescription(`✅ ${message.author} gave ${target} ${amount} ${guilddata.currencyname}!`);
     message.channel.send({embed: embed});
-    await client.db.userdata.updateOne({ id: target.id }, { $inc: { coins: amount } }, { upsert: true });
+    await client.db.userdata.updateOne({ id: target.id, guildID: message.guild.id }, { $inc: { coins: amount } }, { upsert: true });
   } else {
     return message.channel.send('Economy is disabled on this guild!');
   }

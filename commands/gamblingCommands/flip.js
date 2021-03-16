@@ -30,25 +30,25 @@ module.exports = {
     }
     if (userdata) {
       if (userdata.coins < flipAmount) {
-        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname}!`);
+        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
         return;
       } if (flipAmount < 100) {
-        message.channel.send(`Minimum flip amount is 100 ${guilddata.currencyname}!`);
+        message.channel.send(`Minimum flip amount is 100 ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
         return;
       }
 
       if (Math.random() <= 0.50) {
         const embed = new Discord.MessageEmbed()
         .setColor('#5b4194')
-        .setDescription(`✅ ${message.author} You got ${Math.floor(flipAmount / 2)} 🪙 ${guilddata.currencyname}!! You now have ${userdata.coins + Math.floor(flipAmount / 2)} 🪙 ${guilddata.currencyname}!`)
+        .setDescription(`✅ ${message.author} You got ${Math.floor(flipAmount / 2)} 🪙 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!! You now have ${userdata.coins + Math.floor(flipAmount / 2)} 🪙 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`)
         message.channel.send({embed: embed});
-        await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: Math.floor(flipAmount / 2) } }, { upsert: true });
+        await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: Math.floor(flipAmount / 2) } }, { upsert: true });
       } else {
         const embed = new Discord.MessageEmbed()
         .setColor('#5b4194')
-        .setDescription(`❌ ${message.author} You lost ${flipAmount} 🪙 ${guilddata.currencyname}!! You now only have ${userdata.coins - flipAmount} 🪙 ${guilddata.currencyname}!`)
+        .setDescription(`❌ ${message.author} You lost ${flipAmount} 🪙 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!! You now only have ${userdata.coins - flipAmount} 🪙 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`)
         message.channel.send({embed: embed});
-        await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: flipAmount * -1 } }, { upsert: true });
+        await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: flipAmount * -1 } }, { upsert: true });
       }
     } else {
       message.channel.send('You do not have a profile yet!');

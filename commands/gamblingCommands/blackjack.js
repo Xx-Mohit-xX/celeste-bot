@@ -42,7 +42,7 @@ module.exports = {
     if (!guilddata2.economy || guilddata2.economy === 'true') {
     let fold = 0;
     let amountChange = 0;
-    const userdata = await client.db.userdata.findOne({ id: message.author.id });
+    const userdata = await client.db.userdata.findOne({ id: message.author.id, guildID: message.guild.id });
     const msgArr = message.content.split(' ');
     if (isNaN(msgArr[1])) {
       message.channel.send('Enter a valid amount to blackjack');
@@ -55,10 +55,10 @@ module.exports = {
     }
     if (userdata) {
       if (userdata.coins < amount) {
-        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname}!`);
+        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
         return;
       } if (amount < 0) {
-        message.channel.send(`Minimum blackjack amount is 0 ${guilddata.currencyname}!`);
+        message.channel.send(`Minimum blackjack amount is 0 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
         return;
       }
 
@@ -119,8 +119,8 @@ module.exports = {
           .setColor('#de0000')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `-${Math.ceil(amount / 2)} ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins - Math.ceil(amount / 2)} ${guilddata.currencyname}`);
+          .addField('Profit', `-${Math.ceil(amount / 2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - Math.ceil(amount / 2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = Math.ceil(amount / 2) * -1;
       } else if (playerValue > 21) {
@@ -129,8 +129,8 @@ module.exports = {
           .setColor('#de0000')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `-${amount} ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins - amount} ${guilddata.currencyname}`);
+          .addField('Profit', `-${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = amount * -1;
       } else if (dealerValue > 21) {
@@ -139,8 +139,8 @@ module.exports = {
           .setColor('#88ff88')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `${amount} ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins + amount} ${guilddata.currencyname}`);
+          .addField('Profit', `${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins + amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = amount;
       } else if (playerValue > dealerValue) {
@@ -149,8 +149,8 @@ module.exports = {
           .setColor('#88ff88')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `${amount} ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins + amount} ${guilddata.currencyname}`);
+          .addField('Profit', `${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins + amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = amount;
       } else if (playerValue === dealerValue) {
@@ -159,8 +159,8 @@ module.exports = {
           .setColor('#f5bc42')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `0 ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins} ${guilddata.currencyname}`);
+          .addField('Profit', `0 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = 0;
       } else {
@@ -169,12 +169,12 @@ module.exports = {
           .setColor('#de0000')
           .addField('Your hand', `${playerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${playerValue}**`, true)
           .addField('Dealer hand', `${dealerHand.map((item) => `${item[1]} ${item[0]}`).join(', ')}\nTotal: **${dealerValue}**`, true)
-          .addField('Profit', `-${amount} ${guilddata.currencyname}`)
-          .addField(`${guilddata.currencyname}`, `${userdata.coins - amount} ${guilddata.currencyname}`);
+          .addField('Profit', `-${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
         amountChange = amount * -1;
       }
-      if (amountChange !== 0) { await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: amountChange } }, { upsert: true }); }
+      if (amountChange !== 0) { await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amountChange } }, { upsert: true }); }
     } else {
       message.channel.send('You do not have a profile yet!');
     }

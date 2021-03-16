@@ -17,7 +17,7 @@ module.exports = {
       id: message.guild.id,
     });
     if (!guilddata2.economy || guilddata2.economy === 'true') {
-    const userdata = await client.db.userdata.findOne({ id: message.author.id });
+    const userdata = await client.db.userdata.findOne({ id: message.author.id, guildID: message.guild.id });
     if (userdata) {
       const reference = config.levels.findIndex((level) => level > userdata.exp);
       const currentExp = userdata.exp - config.levels[reference - 1];
@@ -64,7 +64,7 @@ module.exports = {
       ctx.textAlign = 'end';
       ctx.font = '23px HYWenHei';
       ctx.fillStyle = 'rgb(255, 255, 255)';
-      ctx.fillText(`${guilddata.currencyname}`, 327, 175)
+      ctx.fillText(`${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`, 327, 175)
       ctx.fillText(`${currentLevel+1}`, 670, 136);
       ctx.fillText(`${userdata.coins}`, 670, 175);
 

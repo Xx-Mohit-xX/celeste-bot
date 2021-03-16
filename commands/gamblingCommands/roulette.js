@@ -23,7 +23,7 @@ module.exports = {
     });
     if (!guilddata2.economy || guilddata2.economy === 'true') {
     let win = 0;
-    const userdata = await client.db.userdata.findOne({ id: message.author.id });
+    const userdata = await client.db.userdata.findOne({ id: message.author.id, guildID: message.guild.id });
     const msgArr = message.content.split(' ');
     const selectedNumber = parseInt(msgArr[1], 10);
     let amount = parseInt(msgArr[2], 10);
@@ -33,10 +33,10 @@ module.exports = {
     }
     if (userdata) {
       if (userdata.coins < amount) {
-        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname}!`);
+        message.channel.send(`You only have ${userdata.coins} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
         return;
       } if (amount < 0) {
-        message.channel.send(`Minimum roulette amount is 0 ${guilddata.currencyname}!`);
+        message.channel.send(`Minimum roulette amount is 0 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
         return;
       }
 
@@ -84,19 +84,19 @@ module.exports = {
           .setTitle('Roulette')
           .setColor('#31e810')
           .addField('Number Drawn', `${draw}`)
-          .addField('You won!', `You won ${(amount + amount * win).toFixed(2)} ${guilddata.currencyname}`)
-          .addField('Credits', `You have ${(userdata.coins + (amount * win)).toFixed(2)} ${guilddata.currencyname}`);
+          .addField('You won!', `You won ${(amount + amount * win).toFixed(2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField('Credits', `You have ${(userdata.coins + (amount * win)).toFixed(2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(rewardMessage);
-        await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: (amount * win) } }, { upsert: true });
+        await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: (amount * win) } }, { upsert: true });
       } else {
         const rewardMessage = new MessageEmbed()
           .setTitle('Roulette')
           .setColor('#d90000')
           .addField('Number Drawn', `${draw}`)
-          .addField('You lost!', `You lost ${amount} ${guilddata.currencyname}`)
-          .addField('Credits', `You have ${userdata.coins - amount} ${guilddata.currencyname}`);
+          .addField('You lost!', `You lost ${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
+          .addField('Credits', `You have ${userdata.coins - amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(rewardMessage);
-        await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: amount * -1 } }, { upsert: true });
+        await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amount * -1 } }, { upsert: true });
       }
     } else {
       message.channel.send('You do not have a profile yet!');

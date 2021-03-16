@@ -10,6 +10,7 @@ module.exports = {
   usage: 'send @user <amount>',
   execute: async (client, message, config) => {
     const msgArr = message.content.split(' ');
+    if (message.author.id !== '620196347890499604' && !message.member.hasPermission(['ADMINISTRATOR'])) { return message.reply('You\'re not allowed to use this command!'); }
     if (msgArr.length === 1) {
       const guilddata = await client.db.config.findOne({
         id: message.guild.id,
