@@ -6,9 +6,13 @@ module.exports = {
   aliases: 'ssbuy',
   usage: 'buy',
   execute: async (client, message, config) => {
-    const guilddata = await client.db.config.findOne({
+    const guilddata2 = await client.db.config.findOne({
       id: message.guild.id,
     });
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
+    });
+    if (guilddata2.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     if (config.shop) {
       const msgArr = message.content.split(' ');
       if (!msgArr[1]) {
