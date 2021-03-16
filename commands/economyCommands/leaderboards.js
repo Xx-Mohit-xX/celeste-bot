@@ -39,6 +39,7 @@ module.exports = {
     const guilddata = await client.db.islandinfo.findOne({
       guildid: message.guild.id,
     });
+    if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     for (const user of overall) {
       const currentUser = message.guild.members.cache.get(user.id);
       // Print Name

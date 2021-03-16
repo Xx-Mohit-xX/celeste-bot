@@ -13,6 +13,7 @@ module.exports = {
     const guilddata = await client.db.islandinfo.findOne({
       guildid: message.guild.id,
     });
+    if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     const amount = Math.floor(Math.random() * (config.hunt.max - config.hunt.min + 1) + config.hunt.min);
     const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')

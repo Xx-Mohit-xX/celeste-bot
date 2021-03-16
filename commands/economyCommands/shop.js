@@ -9,6 +9,7 @@ module.exports = {
     const guilddata = await client.db.islandinfo.findOne({
       guildid: message.guild.id,
     });
+    if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     if (config.shop) {
       const itemList = Object.keys(config.shop).map((itemName) => {
         const item = config.shop[itemName];
