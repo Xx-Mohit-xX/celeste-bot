@@ -81,7 +81,7 @@ module.exports = {
 
       const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
-      message.channel.send(`${message.member}'s profile:'`, attachment);
+      message.channel.send(`${message.member}'s profile:`, attachment);
     } else {
       message.channel.send('You do not have a profile yet!');
     }
