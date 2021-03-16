@@ -35,7 +35,7 @@ module.exports = {
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
       background = await Canvas.loadImage('img/profile_overlay.png');
-      ctx.drawImage(background, 0, 0, 700, 250);
+      ctx.drawImage(background, 0, 30, 700, 250);
 
       ctx.strokeStyle = '#74037b';
       ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +45,7 @@ module.exports = {
       ctx.fillStyle = 'rgb(204, 255, 102)';
 
       ctx.beginPath();
-      ctx.rect(300.8, 93.7, 375.2 * (currentExp / requiredExp), 6.7);
+      ctx.rect(300.8, 123.7, 375.2 * (currentExp / requiredExp), 6.7);
       ctx.closePath();
       ctx.fill();
 
@@ -55,29 +55,29 @@ module.exports = {
       ctx.shadowOffsetX = 2;
       ctx.shadowOffsetY = 2;
       ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillText(message.member.displayName, 263, 59);
+      ctx.fillText(message.member.displayName, 263, 89);
 
       // Print exp
       ctx.textAlign = 'end';
       ctx.font = '13px HYWenHei';
       ctx.fillStyle = 'rgb(255, 255, 255)';
-      ctx.fillText(`${currentExp}/${requiredExp}`, 677, 86.4);
+      ctx.fillText(`${currentExp}/${requiredExp}`, 677, 116.4);
 
       // Print coins
       ctx.textAlign = 'end';
       ctx.font = '23px HYWenHei';
       ctx.fillStyle = 'rgb(255, 255, 255)';
-      ctx.fillText(`${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`, 327, 175)
-      ctx.fillText(`${currentLevel+1}`, 670, 136);
-      ctx.fillText(`${userdata.coins}`, 670, 175);
+      ctx.fillText(`${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`, 327, 205)
+      ctx.fillText(`${currentLevel+1}`, 670, 166);
+      ctx.fillText(`${userdata.coins}`, 670, 205);
 
       ctx.beginPath();
-      ctx.arc(127, 127, 100, 0, Math.PI * 2, true);
+      ctx.arc(127, 157, 100, 0, Math.PI * 2, true);
       ctx.closePath();
       ctx.clip();
 
       const avatar = await Canvas.loadImage(message.member.user.displayAvatarURL({ format: 'jpg' }));
-      ctx.drawImage(avatar, 27, 27, 200, 200);
+      ctx.drawImage(avatar, 27, 27, 200, 230);
 
       const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
