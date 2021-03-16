@@ -39,6 +39,13 @@ module.exports = {
       }
     } else if (msgArr[1] === 'remove') {
       config.channels.welcomeChannel = '';
+      await client.db.config.updateOne({ id: message.guild.id}, {
+        $unset: {
+          'channels.welcomeChannel': ''
+        }
+      }, { upsert: true }).catch((error) => {
+        return message.channel.send('There was an error removing the welcome channel from the database.')
+      });
       const doneEmbed = new Discord.MessageEmbed()
       .setColor('#5b4194')
       .setDescription('Welcome channel has been removed.');
