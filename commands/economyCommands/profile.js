@@ -26,14 +26,16 @@ module.exports = {
       const requiredExp = config.levels[reference] - config.levels[reference - 1];
 
       Canvas.registerFont('fonts/HYWenHei.ttf', { family: 'HYWenHei', style: 'Heavy', weight: 'Normal' });
-      const canvas = Canvas.createCanvas(700, 250);
+      const canvas = Canvas.createCanvas(700, 300);
       const ctx = canvas.getContext('2d');
 
-      let background = await Canvas.loadImage(userdata2.hasPremium === 'true' && userdata2.profileimage ? userdata2.profileimage : 'img/background_2.png');
+      let background = await Canvas.loadImage(userdata2.hasPremium === 'true' && userdata2.profileimage ? userdata2.profileimage : 'img/background_2.png').catch((error) => {
+        return message.channel.send('Image type is not supported or image link is broken.')
+      });
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
       background = await Canvas.loadImage('img/profile_overlay.png');
-      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, 700, 250);
 
       ctx.strokeStyle = '#74037b';
       ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -79,7 +81,7 @@ module.exports = {
 
       const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
-      message.channel.send(`Here is your profile, ${message.member}!`, attachment);
+      message.channel.send(`${message.member}'s profile:`, attachment);
     } else {
       message.channel.send('You do not have a profile yet!');
     }
