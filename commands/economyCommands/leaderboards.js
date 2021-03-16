@@ -9,7 +9,7 @@ const Canvas = require('canvas');
 module.exports = {
   name: 'leaderboards',
   description: 'Print leaderboards',
-  aliases: ['lb'],
+  aliases: 'lb',
   execute: async (client, message) => {
     const msgArr = message.content.split(' ');
     let page = 0;
@@ -22,8 +22,8 @@ module.exports = {
     if (client.leaderboards) {
       clearInterval(client.leaderboards);
     }
-    const data = await client.db.userdata.find().toArray();
-    const overall = data.sort((a, b) => b.exp - a.exp).slice(0 + page * 10, 10 + page * 10);
+    const data = await client.db.userdata.find({guildID: message.guild.id}).toArray();
+    const overall = data.sort((a, b) => b.coins - a.coins).slice(0 + page * 10, 10 + page * 10);
 
     Canvas.registerFont('fonts/Nexa Bold.otf', { family: 'NexaBold', style: 'Heavy', weight: 'Normal' });
     const canvas = Canvas.createCanvas(589, 916);
@@ -36,7 +36,9 @@ module.exports = {
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     let i = 0;
-
+    const guilddata = await client.db.config.findOne({
+      id: message.guild.id,
+    });
     for (const user of overall) {
       const currentUser = message.guild.members.cache.get(user.id);
       // Print Name
@@ -47,7 +49,7 @@ module.exports = {
       // Print Exp
       ctx.font = '20px NexaBold';
       ctx.fillStyle = 'rgb(236, 229, 216)';
-      ctx.fillText(`${user.exp} EXP`, 147, 184 + i * 78.2);
+      ctx.fillText(`${user.coins} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`, 147, 184 + i * 78.2);
 
       // Print Rank
       ctx.font = '34px NexaBold';
@@ -56,7 +58,7 @@ module.exports = {
 
       i += 1;
     }
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'leaderboard.png');
     message.channel.send(attachment);
   },
 };

@@ -7,14 +7,17 @@ module.exports = {
   usage: 'fish',
   execute: async (client, message, config) => {
     if (!config.fish) {
-      message.channel.send('Admin must configure fish amount first using !setfish min-max');
+      message.channel.send('Fish amount not configured.');
       return;
     }
+    const guilddata = await client.db.config.findOne({
+      id: message.guild.id,
+    });
     const amount = Math.floor(Math.random() * (config.fish.max - config.fish.min + 1) + config.fish.min);
     const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')
-      .setTitle('Fish')
-      .setDescription(`✅ ${message.author} you obtained ${amount}!`);
+      .setTitle('Fishing')
+      .setDescription(`✅ ${message.author} you got ${amount} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
     message.channel.send({ embed });
     await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amount } }, { upsert: true });
   },

@@ -7,17 +7,17 @@ module.exports = {
     if (!message.member.roles.cache.some((r) => config.permissions.moderation.includes(r.id) || message.member.hasPermission(['ADMINISTRATOR']))) { message.reply('You\'re not allowed to use this command!'); return; }
     const msgArr = message.content.split(' ');
     if (!msgArr[1]) {
-      message.channel.send('configure hunt amount first using !sethunt min-max');
+      message.channel.send('Configure hunt amount first using ;sethunt min-max');
       return;
     }
     const rangeArr = msgArr[1].split('-');
     const min = parseInt(rangeArr[0], 10);
     const max = parseInt(rangeArr[1], 10);
     if (isNaN(min) || isNaN(max)) {
-      message.channel.send('min and max must be integers!');
+      message.channel.send('Min and max must be integers!');
       return;
     }
-    message.channel.send('settings have been successfully applied!');
+    message.channel.send('Settings have been successfully applied!');
     config.hunt = { min, max };
     await client.db.config.updateOne({ id: message.guild.id }, { $set: { hunt: config.hunt } }, { upsert: true });
   },

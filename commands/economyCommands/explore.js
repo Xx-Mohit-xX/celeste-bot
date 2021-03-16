@@ -7,14 +7,17 @@ module.exports = {
   usage: 'explore',
   execute: async (client, message, config) => {
     if (!config.explore) {
-      message.channel.send('Admin must configure explore amount first using !setexplore min-max');
+      message.channel.send('Explore amount not configured.');
       return;
     }
+    const guilddata = await client.db.config.findOne({
+      id: message.guild.id,
+    });
     const amount = Math.floor(Math.random() * (config.explore.max - config.explore.min + 1) + config.explore.min);
     const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')
       .setTitle('Explore')
-      .setDescription(`✅ ${message.author} you obtained ${amount}!`);
+      .setDescription(`✅ ${message.author} you got ${amount} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
     message.channel.send({ embed });
     await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amount } }, { upsert: true });
   },

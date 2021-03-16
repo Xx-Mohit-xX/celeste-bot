@@ -15,12 +15,6 @@ const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true }
 const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || 'Off'}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? 'All Queue' : 'This Song' : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
 distubeListeners(distube, status);
 
-const player = new Player(client, {
-  leaveOnEmpty: true, // This options are optional.
-});
-
-client.player = player;
-
 client.on('ready', () => {
   client.guilds.cache.forEach((server) => {
     console.log(`${server.name} (id: ${server.id})`);

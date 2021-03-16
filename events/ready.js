@@ -22,7 +22,7 @@ module.exports = async (client) => {
   client.guildConfig = {};
   client.mutes = {};
   client.giveaways = {};
-  client.cooldowns = {}
+  client.cooldowns = {};
   const dbConfig = await client.db.config.find().toArray();
   dbConfig.forEach((c) => {
     const currentGuild = client.guilds.cache.get(c.id);

@@ -7,14 +7,17 @@ module.exports = {
   usage: 'hunt',
   execute: async (client, message, config) => {
     if (!config.hunt) {
-      message.channel.send('Admin must configure hunt amount first using !sethunt min-max');
+      message.channel.send('Explore amount not configured.');
       return;
     }
+    const guilddata = await client.db.config.findOne({
+      id: message.guild.id,
+    });
     const amount = Math.floor(Math.random() * (config.hunt.max - config.hunt.min + 1) + config.hunt.min);
     const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')
-      .setTitle('Hunt')
-      .setDescription(`✅ ${message.author} you obtained ${amount}!`);
+      .setTitle('Hunting')
+      .setDescription(`✅ ${message.author} you got ${amount} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
     message.channel.send({ embed });
     await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amount } }, { upsert: true });
   },
