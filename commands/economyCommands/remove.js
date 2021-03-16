@@ -24,9 +24,9 @@ module.exports = {
     }
     const embed = new Discord.MessageEmbed()
     .setColor('#5b4194')
-    .setDescription(`✅ ${message.author} removed ${amount} ${guilddata.currencyname} from ${target}!`);
+    .setDescription(`✅ ${message.author} removed ${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'} from ${target}!`);
     message.channel.send({embed: embed});
-    await client.db.userdata.updateOne({ id: target.id }, { $inc: { coins: -amount } }, { upsert: true });
+    await client.db.userdata.updateOne({ id: target.id, guildID: message.guild.id }, { $inc: { coins: -amount } }, { upsert: true });
   } else {
     return message.channel.send('Economy is disabled on this guild!');
   }

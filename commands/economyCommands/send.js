@@ -25,15 +25,15 @@ module.exports = {
     if (amount > authordata.coins) {
       const failembed = new Discord.MessageEmbed()
       .setColor('#d40000')
-      .setDescription(`You don't have enough ${guilddata.currencyname}!`);
+      .setDescription(`You don't have enough ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
       return message.channel.send({embed: failembed});
     }
     const embed = new Discord.MessageEmbed()
     .setColor('#0fdb00')
-    .setDescription(`✅ ${message.author} gave ${target} ${amount} ${guilddata.currencyname}!`);
+    .setDescription(`✅ ${message.author} gave ${target} ${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
     message.channel.send({embed: embed});
-    await client.db.userdata.updateOne({ id: target.id }, { $inc: { coins: amount } }, { upsert: true });
-    await client.db.userdata.updateOne({ id: message.author.id }, { $inc: { coins: -amount } }, { upsert: true });
+    await client.db.userdata.updateOne({ id: target.id, guildID: message.guild.id }, { $inc: { coins: amount } }, { upsert: true });
+    await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: -amount } }, { upsert: true });
   } else {
     return message.channel.send('Economy is disabled on this guild!');
   }

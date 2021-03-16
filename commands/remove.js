@@ -13,9 +13,9 @@ module.exports = {
     const msgArr = message.content.split(' ');
     const user = message.mentions.users.first() || client.users.cache.get(msgArr[1]);
     if (user) {
-      const userdata = await client.db.findOne({ id: user.id });
+      const userdata = await client.db.islandinfo.findOne({ id: user.id });
       if (userdata) {
-        client.db.removeOne({ id: user.id });
+        client.db.islandinfo.removeOne({ id: user.id });
         message.channel.send(`${user}'s island info has been removed!`);
       } else {
         message.channel.send('Specified user doesn\'t have any island info!');

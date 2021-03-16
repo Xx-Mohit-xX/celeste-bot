@@ -43,9 +43,16 @@ module.exports = (client, guildID) => {
       maxCoins: 70,
     },
   };
+
   client.db.config.updateOne({ id: guildID }, {
     $set: client.guildConfig[guildID]
   },
   { upsert: true });
+  client.db.islandinfo.updateOne({ guildid: guildID }, {
+    $set: {
+      initialised: 'true'
+    }
+  }
+  ,{ upsert: true });
   client.cooldowns[guildID] = {};
 };

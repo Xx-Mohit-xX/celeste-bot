@@ -17,7 +17,8 @@ module.exports = {
       id: message.guild.id,
     });
     if (!guilddata2.economy || guilddata2.economy === 'true') {
-    const userdata = await client.db.userdata.findOne({ id: message.author.id });
+    const userdata = await client.db.userdata.findOne({ id: message.author.id, guildID: message.guild.id });
+    const userdata2 = await client.db.islandinfo.findOne({ id: message.author.id });
     if (userdata) {
       const reference = config.levels.findIndex((level) => level > userdata.exp);
       const currentExp = userdata.exp - config.levels[reference - 1];
@@ -28,7 +29,7 @@ module.exports = {
       const canvas = Canvas.createCanvas(700, 250);
       const ctx = canvas.getContext('2d');
 
-      let background = await Canvas.loadImage('img/background_2.png');
+      let background = await Canvas.loadImage(userdata2.hasPremium === 'true' && userdata2.profileimage ? userdata2.profileimage : 'img/background_2.png');
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
       background = await Canvas.loadImage('img/profile_overlay.png');
@@ -64,7 +65,7 @@ module.exports = {
       ctx.textAlign = 'end';
       ctx.font = '23px HYWenHei';
       ctx.fillStyle = 'rgb(255, 255, 255)';
-      ctx.fillText(`${guilddata.currencyname}`, 327, 175)
+      ctx.fillText(`${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`, 327, 175)
       ctx.fillText(`${currentLevel+1}`, 670, 136);
       ctx.fillText(`${userdata.coins}`, 670, 175);
 
