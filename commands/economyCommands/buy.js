@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 
 module.exports = {
-  name: 'buy',
+  name: 'servershopbuy',
   description: 'show buy items',
-  aliases: [],
+  aliases: 'ssbuy',
   usage: 'buy',
   execute: async (client, message, config) => {
     const guilddata = await client.db.config.findOne({

@@ -6,8 +6,8 @@ module.exports = {
   aliases: 'ss',
   usage: 'shop',
   execute: async (client, message, config) => {
-    const guilddata = await client.db.config.findOne({
-      id: message.guild.id,
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
     });
     if (config.shop) {
       const itemList = Object.keys(config.shop).map((itemName) => {
@@ -16,11 +16,12 @@ module.exports = {
       });
       const embed = new Discord.MessageEmbed()
         .setTitle('Server Shop')
-        .setDescription(itemList.join('\n\n'));
+        .setDescription(itemList.join('\n\n'))
+        .setFooter(';servershopbuy <item>')
       message.channel.send(embed);
     } else {
       const embed = new Discord.MessageEmbed()
-      .setTitle('Shop')
+      .setTitle('Server Shop')
       .setDescription('There are no items in the shop!');
       message.channel.send(embed);
     }

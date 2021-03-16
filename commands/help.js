@@ -14,7 +14,8 @@ module.exports = {
   .addField('Basic', 'Lookup')
   .addField('Misc', 'Giveaway')
   .addField('Economy', 'Gambling')
-  .addField('Moderation', 'Admin')
+  .addField('Music', 'Moderation')
+  .addField('Econfig', 'Admin')
 	.setFooter('Celeste by Aurora.#0001', 'https://cdn.discordapp.com/avatars/620196347890499604/a_5391c66d7eb10c5357348b13be82045a.gif?size=256&f=.gif');
 //  message.channel.send('Help has arrived!');
 	message.channel.send('Help has arrived!', { embed: embedA });
@@ -52,19 +53,31 @@ module.exports = {
   const embed = new Discord.MessageEmbed()
   .setColor('#5b4194')
   .setDescription('These are the commands you can use:')
-  .addField('Admin', 'setrole \nsetwish \ntogglefriendcode \nwelcomechannel \npermissions \npermission \nsetprefix \nreactionrole \naddreactionrole \nlevelupchannel \nseteconomy');
+  .addField('Admin', 'setrole \nsetwish \ntogglefriendcode \nwelcomechannel \npermissions \npermission \nsetprefix \nreactionrole \naddreactionrole \nlevelupchannel \nwelcomeimage \nsetcooldown');
   message.channel.send('Help has arrived!', { embed: embed });
 }  else if (msgArr[1].toLowerCase() === 'economy') {
   const embed = new Discord.MessageEmbed()
   .setColor('#5b4194')
   .setDescription('These are the commands you can use:')
-  .addField('Economy', 'add \n remove \nprofile \n balance');
+  .addField('Economy', 'profile \n balance \nsend \nleaderboards \nfish \nexplore \nhunt \nservershop \nservershopbuy \nsetprofileimage');
   message.channel.send('Help has arrived!', { embed: embed });
 }  else if (msgArr[1].toLowerCase() === 'gambling') {
   const embed = new Discord.MessageEmbed()
   .setColor('#5b4194')
   .setDescription('These are the commands you can use:')
   .addField('Gambling', 'blackjack \nflip \nroulette \nslots');
+  message.channel.send('Help has arrived!', { embed: embed });
+} else if (msgArr[1].toLowerCase() === 'econfig') {
+  const embed = new Discord.MessageEmbed()
+  .setColor('#5b4194')
+  .setDescription('These are the commands you can use:')
+  .addField('Economy Config', 'add \nremove \naddshop \nremoveshop \nsetexplore \nsetfish \nsethunt \ntogglelevelrole \nseteconomy');
+  message.channel.send('Help has arrived!', { embed: embed });
+} else if (msgArr[1].toLowerCase() === 'music') {
+  const embed = new Discord.MessageEmbed()
+  .setColor('#5b4194')
+  .setDescription('These are the commands you can use:')
+  .addField('Music', 'play \nfilters \nqueue \nskip \nstop');
   message.channel.send('Help has arrived!', { embed: embed });
 } else {
   message.channel.send('That is an invalid command module!');

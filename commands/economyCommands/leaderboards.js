@@ -36,8 +36,8 @@ module.exports = {
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     let i = 0;
-    const guilddata = await client.db.config.findOne({
-      id: message.guild.id,
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
     });
     for (const user of overall) {
       const currentUser = message.guild.members.cache.get(user.id);

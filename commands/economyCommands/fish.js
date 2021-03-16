@@ -10,8 +10,8 @@ module.exports = {
       message.channel.send('Fish amount not configured.');
       return;
     }
-    const guilddata = await client.db.config.findOne({
-      id: message.guild.id,
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
     });
     const amount = Math.floor(Math.random() * (config.fish.max - config.fish.min + 1) + config.fish.min);
     const embed = new Discord.MessageEmbed()

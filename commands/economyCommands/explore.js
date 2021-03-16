@@ -10,8 +10,8 @@ module.exports = {
       message.channel.send('Explore amount not configured.');
       return;
     }
-    const guilddata = await client.db.config.findOne({
-      id: message.guild.id,
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
     });
     const amount = Math.floor(Math.random() * (config.explore.max - config.explore.min + 1) + config.explore.min);
     const embed = new Discord.MessageEmbed()
