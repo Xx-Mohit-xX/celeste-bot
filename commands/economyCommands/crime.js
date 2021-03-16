@@ -10,10 +10,13 @@ module.exports = {
       message.channel.send('Crime amount not configured.');
       return;
     }
-    const guilddata = await client.db.config.findOne({
+    const guilddata2 = await client.db.config.findOne({
       id: message.guild.id,
     });
-    if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
+    const guilddata = await client.db.islandinfo.findOne({
+      guildid: message.guild.id,
+    });
+    if (guilddata2.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     const amount = Math.floor(Math.random() * (config.crime.max - config.crime.min + 1) + config.crime.min);
     const loss = Math.round(Math.random());
     if (loss === 0) {
