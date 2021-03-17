@@ -15,6 +15,7 @@ module.exports = {
   .addField('Misc', 'Giveaway')
   .addField('Economy', 'Gambling')
   .addField('Music', 'Moderation')
+  .addField('Memes', 'Roleplay')
   .addField('Econfig', 'Admin')
 	.setFooter('Celeste by Aurora.#0001', 'https://cdn.discordapp.com/avatars/620196347890499604/a_5391c66d7eb10c5357348b13be82045a.gif?size=256&f=.gif');
 //  message.channel.send('Help has arrived!');
@@ -78,6 +79,18 @@ module.exports = {
   .setColor('#5b4194')
   .setDescription('These are the commands you can use:')
   .addField('Music', 'play \nfilters \nqueue \nskip \nstop');
+  message.channel.send('Help has arrived!', { embed: embed });
+} else if (msgArr[1].toLowerCase() === 'memes') {
+  const embed = new Discord.MessageEmbed()
+  .setColor('#5b4194')
+  .setDescription('These are the commands you can use:')
+  .addField('Memes', 'joke \nmeme \nanimeme \nshowerthoughts \ntil');
+  message.channel.send('Help has arrived!', { embed: embed });
+} else if (msgArr[1].toLowerCase() === 'roleplay') {
+  const embed = new Discord.MessageEmbed()
+  .setColor('#5b4194')
+  .setDescription('These are the commands you can use:')
+  .addField('Roleplay', 'blush \ncry \ncuddle \ndab \ndance \nfacepalm \nhighfive \nholdhands \nhug \nkill \nkiss \nlove \nno \npat \npoke \npout \nslap \nstare \nthumbsup \nwave \nwink \nyes');
   message.channel.send('Help has arrived!', { embed: embed });
 } else {
   message.channel.send('That is an invalid command module!');

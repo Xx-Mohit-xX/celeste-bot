@@ -2,7 +2,6 @@
 const { Client, Collection } = require('discord.js');
 const fs = require('fs');
 const DisTube = require('distube');
-const { Player } = require('discord-music-player');
 
 const { token } = require('./config');
 const distubeListeners = require('./utils/music/distubeListeners');
