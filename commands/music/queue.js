@@ -8,7 +8,8 @@ module.exports = {
   execute: async (client, message, config, distube) => {
     const queue = distube.getQueue(message);
     const embed = new Discord.MessageEmbed()
-    .setDescription(`Current queue:\n${queue.songs.map((song, id) => `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).slice(0, 10).join('\n')}`)
+    .setColor('#5b4194')
+    .setDescription(`Current queue:\n\n${queue.songs.map((song, id) => `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).slice(0, 10).join('\n')}`)
     message.channel.send(embed);
   },
 };
