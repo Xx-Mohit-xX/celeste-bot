@@ -4,19 +4,17 @@ const giphyToken = "SBchkKbjCTGAueJluuoI00Es2mNxqY0K";
 const GphApiClient = require("giphy-js-sdk-core");
 const giphy = GphApiClient(giphyToken);
 module.exports = {
-  name: 'gif',
+  name: 'no',
+  aliases: '',
   description: 'lookup gif',
   execute: async (client, message) => {
     const msgArr = message.content.split(' ');
     var queries = [
-    'animal crossing',
-    'tom nook',
-    'isabelle animal crossing',
-    'animalcrossing',
-    'able sisters animal crossing',
-    'villager animal crossing',
-    'ACNH'
+    'nope'
   ]
+  if(!msgArr[1]) return message.channel.send('Specify a user!');
+  const target = message.mentions.members.first();
+  if (!target) return ('That\'s not a valid user!');
     var query = queries[Math.round(Math.random() * (queries.length - 1))];
     giphy
       .search("gifs", { q: query })
@@ -28,10 +26,14 @@ module.exports = {
           message.channel.send(`Error! I couldnt find any gifs ${query}`);
           return;
         }
+        const embed = new Discord.MessageEmbed()
+        .setDescription(`${message.author} is disagreeing with ${target}!`)
+        .setImage(responseFinal.images.fixed_height.url)
+        .setColor('#5b4194')
         message.channel.send(
-          `Queried \'${query}\' and found:`,
           {
-            files: [responseFinal.images.fixed_height.url]
+            embed: embed,
+            //files: [responseFinal.images.fixed_height.url]
           }
         );
       })
@@ -46,8 +48,7 @@ module.exports = {
           )
           .addField("Error Log:", err, true)
           .setTimestamp()
-          .setFooter("I\'m a bot using discord.js!");
-        message.reply(gifCrash);
+        message.channel.send(gifCrash);
         console.log(`Giphy Error: ${err}`);
       });
   },
