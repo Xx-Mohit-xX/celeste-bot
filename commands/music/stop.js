@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 module.exports = {
   name: 'stop',
   description: 'stop music',
@@ -6,6 +7,9 @@ module.exports = {
   admin: false,
   execute: async (client, message, config, distube) => {
     distube.stop(message);
-    message.channel.send('Stopped the music!');
+    const embed = new Discord.MessageEmbed()
+    .setColor('GREEN')
+    .setDescription('Stopped the music!');
+    message.channel.send(embed);
   },
 };
