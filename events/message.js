@@ -19,7 +19,23 @@ module.exports = (client, distube, message) => {
     initializeGuild(client, message.guild.id);
     return;
   }
-
+  async function checkHighlights() {
+    const Guild = client.guilds.cache.get(message.guild.id);
+    const Members = Guild.members.cache.map(member => member.id);
+    const highlights = await client.db.userdata.find({highlightList: message.content})
+    if(!highlights) return;
+    console.log(highlights.highlightList);
+    console.log(highlights);
+    const [ list ] = highlights.highlightList;
+  //  for (var i = 0; i < highlights.highlightLight.length; i++) {
+  //    if (message.content.includes(highlights.highlightList[i])) {
+      list.forEach(user => {
+      client.users.cache.get(user.id).send('test');
+   })
+//  }
+//  }
+}
+  checkHighlights();
   if (message.content.startsWith(config.prefix)) {
     const command = client.commands.get(commandName);
     if (!client.commands.has(commandName)) return;

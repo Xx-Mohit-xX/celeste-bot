@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 module.exports = {
-  name: 'jump',
+  name: 'rewind',
   description: 'Play music',
-  aliases: 'skipto',
+  aliases: '',
   usage: 'play <music name>',
   admin: false,
   execute: async (client, message, config, distube) => {
@@ -14,15 +14,26 @@ module.exports = {
           .setDescription(`There is nothing playing!`)
           return message.channel.send(embed)
         } else if (queue) {
+          if (!msgArr[1]) {
+            const embed = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setDescription(`You must specify an amount of seconds to rewind!`)
+            return message.channel.send(embed)
+          }
           try {
-          distube.jump(message, parseInt(msgArr[1]-1))
+          let seektime = queue.currentTime - Number(msgArr[1]) * 1000;
+          if(seektime < 0)
+          seektime = 0;
+          if(seektime >= queue.songs[0].duration * 1000 - queue.currentTime)
+          seektime = 0;
+        distube.seek(message, seektime)
         } catch (err) {
-          return message.channel.send('Invalid song number!');
+          return message.channel.send('Invalid time!');
         }
           const embed = new Discord.MessageEmbed()
           .setColor('GREEN')
-          .setDescription(`Skipped to song \`${msgArr[1]}\`!`)
-          return message.channel.send(embed);
+          .setDescription(`Rewound \`${msgArr[1]}\` seconds!`)
+          return message.channel.send(embed)
       } else {
         const embed = new Discord.MessageEmbed()
         .setColor('RED')
