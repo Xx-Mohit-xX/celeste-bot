@@ -1,13 +1,13 @@
 // This is the starting point of the bot
-const { Client, Collection } = require('discord.js');
+const Discord = require('discord.js');
 const fs = require('fs');
 const DisTube = require('distube');
 
 const { token } = require('./config');
 const distubeListeners = require('./utils/music/distubeListeners');
 
-const client = new Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER'] });
-client.commands = new Collection();
+const client = new Discord.Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER'] });
+client.commands = new Discord.Collection();
 
 const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
 const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || 'Off'}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? 'All Queue' : 'This Song' : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
@@ -18,7 +18,10 @@ client.on('ready', () => {
     console.log(`${server.name} (id: ${server.id})`);
   });
   client.user.setStatus('online');
-  client.user.setActivity('with island info | ;help', { type: 'PLAYING' });
+  client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' });
+});
+client.on('guildMemberAdd', member => { //when someone new joins a guild
+    client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' }); //Update the activity every time someone joins a guild
 });
 
 const importAllFiles = (dir) => {
@@ -49,6 +52,7 @@ fs.readdir('./events/', (err, files) => {
     client.on(evtName, (...args) => evt(client, distube, ...args));
   });
 });
+
 client.login(token);
 
 module.exports = client;
