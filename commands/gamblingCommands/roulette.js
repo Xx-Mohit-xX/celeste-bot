@@ -60,7 +60,7 @@ module.exports = {
         }
       } else if (msgArr[1].toLowerCase() === 'green') {
         if (draw === 0) {
-          win = 35;
+          win = 10;
         }
       } else if (msgArr[1].toLowerCase() === 'odd') {
         if (draw % 2 === 1) {
@@ -73,7 +73,7 @@ module.exports = {
       } else if (!isNaN(selectedNumber)) {
         if (selectedNumber >= 0 && selectedNumber <= 36) {
           if (selectedNumber === draw) {
-            win = 35;
+            win = 10;
           }
         } else {
           message.channel.send('Invalid Input!');

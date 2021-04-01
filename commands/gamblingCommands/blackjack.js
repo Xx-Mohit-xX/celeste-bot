@@ -61,6 +61,7 @@ module.exports = {
         message.channel.send(`Minimum blackjack amount is 0 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
         return;
       }
+      await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: -amount } }, { upsert: true });
 
       // BLACK JACK PART
       const playerHand = [];
@@ -122,7 +123,7 @@ module.exports = {
           .addField('Profit', `-${Math.ceil(amount / 2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - Math.ceil(amount / 2)} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = Math.ceil(amount / 2) * -1;
+        amountChange = Math.ceil(amount / 2);
       } else if (playerValue > 21) {
         const embedMessage = new MessageEmbed()
           .setTitle('Blackjack (You Bust)')
@@ -132,7 +133,7 @@ module.exports = {
           .addField('Profit', `-${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = amount * -1;
+        amountChange = 0;
       } else if (dealerValue > 21) {
         const embedMessage = new MessageEmbed()
           .setTitle('Blackjack (You Won)')
@@ -142,7 +143,7 @@ module.exports = {
           .addField('Profit', `${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins + amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = amount;
+        amountChange = amount * 2;
       } else if (playerValue > dealerValue) {
         const embedMessage = new MessageEmbed()
           .setTitle('Blackjack (You Won)')
@@ -152,7 +153,7 @@ module.exports = {
           .addField('Profit', `${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins + amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = amount;
+        amountChange = amount * 2;
       } else if (playerValue === dealerValue) {
         const embedMessage = new MessageEmbed()
           .setTitle('Blackjack (Draw)')
@@ -162,7 +163,7 @@ module.exports = {
           .addField('Profit', `0 ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = 0;
+        amountChange = amount;
       } else {
         const embedMessage = new MessageEmbed()
           .setTitle('Blackjack (You Lost)')
@@ -172,7 +173,7 @@ module.exports = {
           .addField('Profit', `-${amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`)
           .addField(`${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`, `${userdata.coins - amount} ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}`);
         message.channel.send(embedMessage);
-        amountChange = amount * -1;
+        amountChange = 0;
       }
       if (amountChange !== 0) { await client.db.userdata.updateOne({ id: message.author.id, guildID: message.guild.id }, { $inc: { coins: amountChange } }, { upsert: true }); }
     } else {

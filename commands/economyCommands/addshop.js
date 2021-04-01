@@ -10,8 +10,9 @@ module.exports = {
     });
     if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     const msgArr = message.content.split(' ');
-    if (msgArr[1]) {
-      const price = parseInt(msgArr[1], 10);
+    const args = msgArr.slice(1).join(' ').split(', ');
+    if (args.length === 4) {
+      const price = parseInt(args[0], 10);
       if (isNaN(price)) {
         message.channel.send('Enter a valid price!');
         return;
@@ -19,16 +20,20 @@ module.exports = {
       if (!config.shop) {
         config.shop = {};
       }
-      config.shop[msgArr.slice(2).join(' ')] = {
-        name: msgArr.slice(2).join(' '),
+      config.shop[args[1]] = {
+        name: args[1],
         price,
+        emote: args[2],
+        description: args[3]
       };
       client.db.config.updateOne({ id: message.guild.id }, {
         $set: {
           shop: config.shop,
         },
       });
-      message.channel.send(`Successfully added **${msgArr.slice(2).join(' ')}** to shop!`);
+      message.channel.send(`Successfully added **${args[1]}** to shop!`);
+    } else {
+      message.channel.send('Insufficient arguments! Expected usage: `;addshop <price>, <name>, <emote>, <description>`');
     }
   },
 };

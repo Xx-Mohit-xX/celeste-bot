@@ -7,10 +7,10 @@ module.exports = {
   name: 'lookup',
   aliases: 'li',
   description: 'lookup',
-  execute: async (client, message) => {
+  execute: async (client, message, config) => {
     const msgArr = message.content.split(' ');
     try {
-    if(message.author.id === '620196347890499604' || message.member.hasPermission('MANAGE_ROLES')) {
+    if(message.author.id === '620196347890499604' || message.member.roles.cache.some((r) => config.permissions.moderation.includes(r.id)) || message.member.hasPermission('ADMINISTRATOR')) {
     const list = await client.db.islandinfo.find().toArray();
     if (!msgArr[1]) {
       message.channel.send('You must provide a name!');

@@ -27,6 +27,10 @@ module.exports = {
       .setColor('#d40000')
       .setDescription(`You don't have enough ${guilddata.currencyname ?  guilddata.currencyname : 'Bells'}!`);
       return message.channel.send({embed: failembed});
+    } else if (amount <= 0 ) {
+      message.channel.send('You cannot send a negative amount!');
+      return;
+
     }
     const embed = new Discord.MessageEmbed()
     .setColor('#0fdb00')

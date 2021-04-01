@@ -14,15 +14,26 @@ module.exports = {
     });
     if (guilddata2.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     if (config.shop) {
-      const itemList = Object.keys(config.shop).map((itemName) => {
-        const item = config.shop[itemName];
-        return `${itemName} \r\n Price: ${item.price} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'} `;
-      });
-      const embed = new Discord.MessageEmbed()
-        .setTitle('Server Shop')
-        .setDescription(itemList.join('\n\n'))
-        .setFooter(';servershopbuy <item>')
-      message.channel.send(embed);
+        const embed = new Discord.MessageEmbed()
+          .setTitle('Server Shop')
+          //.setDescription(itemList.join('\n\n'))
+          .setFooter(';servershopbuy <item>')
+          const itemList = Object.keys(config.shop)
+          .sort((a, b) => {
+            if (config.shop[a].price > config.shop[b].price) return -1;
+            if (config.shop[a].price < config.shop[b].price) return 1;
+            return 0;
+           })
+           itemList.forEach(itemName => {
+             const item = config.shop[itemName];
+             embed.addField(`${item.emote ? `${item.emote} ` : ''}${itemName}`,
+            `${item.description ? item.description : ''} \n **Price**: ${item.price} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}\n** **`)
+           })
+          /* .map((itemName) => {
+            const item = config.shop[itemName];
+            `${item.emote ? `${item.emote} ` : ''}${itemName} \r\n Price: ${item.price} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'} `;
+          }); */
+          message.channel.send(embed);
     } else {
       const embed = new Discord.MessageEmbed()
       .setTitle('Server Shop')
