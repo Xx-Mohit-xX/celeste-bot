@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
   name: 'permission',
   description: 'set guild configurations',
-  aliases: 'config',
+  aliases: 'modperms',
   usage: '!config',
   execute: async (client, message, config) => {
     if (message.author.id !== '620196347890499604' && !message.member.hasPermission(['ADMINISTRATOR'])) { return message.reply('You\'re not allowed to use this command!'); }

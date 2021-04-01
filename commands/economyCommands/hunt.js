@@ -7,7 +7,7 @@ module.exports = {
   usage: 'hunt',
   execute: async (client, message, config) => {
     if (!config.hunt) {
-      message.channel.send('Explore amount not configured.');
+      message.channel.send('Hunt amount not configured.');
       return;
     }
     const guilddata = await client.db.islandinfo.findOne({
@@ -16,7 +16,7 @@ module.exports = {
     const guilddata2 = await client.db.config.findOne({
       id: message.guild.id,
     });
-    if (guilddata.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
+    if (guilddata2.economy === 'false') return message.channel.send('Economy is disabled on this guild!');
     const amount = Math.floor(Math.random() * (config.hunt.max - config.hunt.min + 1) + config.hunt.min);
     const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')

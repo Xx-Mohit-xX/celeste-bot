@@ -12,7 +12,8 @@ module.exports = {
     const msgArr = message.content.split(' ');
 
     const userdata = await client.db.userdata.findOne({id: message.member.id, guildID: message.guild.id });
-    if (msgArr.length === 1) {
+    if (!msgArr[1]) {
+      if(!userdata) return message.channel.send('You do not have a profile yet!')
       if (!userdata.highlightList) return message.channel.send('You\'ve got no highlight words!')
       if (userdata.highlightList.length > 0) {
         return message.channel.send(`Your highlight words are: **${userdata.highlightList.join('**,** ')}**!`);

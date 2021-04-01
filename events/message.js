@@ -43,7 +43,7 @@ module.exports = (client, distube, message) => {
     return;
   }
   async function checkHighlights() {
-    const highlights = await client.db.userdata.find({  }).toArray()
+    const highlights = await client.db.userdata.find({guildID: message.guild.id  }).toArray()
     highlights.forEach((user) => {
       if (user.highlightList) {
         const triggeredWord = user.highlightList.find((word) => message.content.toLowerCase().includes(word.toLowerCase()));

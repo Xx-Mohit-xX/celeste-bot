@@ -22,6 +22,7 @@ module.exports = {
 
       const itemName = message.content.slice(message.content.indexOf(' ') + 1);
       const item = config.shop[itemName];
+      if (!item) return message.channel.send('That is an invalid item!');
 
       const userdata = await client.db.userdata.findOne({ id: message.author.id, guildID: message.guild.id });
       if (userdata.coins < item.price) {
@@ -38,10 +39,19 @@ module.exports = {
         },
       });
 
+      if(config.channels.purchaselog) {
+        const embed = new Discord.MessageEmbed()
+        .setColor('#5b4194')
+        .setDescription(`${message.member} bought ${item.emote}${itemName}`)
+        .setFooter(`${message.guild}'s server shop `)
+        .setTimestamp();
+        client.channels.cache.get(config.channels.purchaselog).send({embed: embed});
+      }
+
       const embed = new Discord.MessageEmbed()
         .setColor('#00c914')
         .setTitle('Successful purchase!')
-        .setDescription(`You have successfully bought ${item.name} for ${item.price} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`);
+        .setDescription(`You have successfully bought ${item.emote ? item.emote : ''}**${item.name}** for ${item.price} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}`);
 
       message.channel.send(embed);
     }
