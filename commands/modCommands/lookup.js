@@ -24,12 +24,19 @@ module.exports = {
           const userdata = message.guild.members.cache.get(member.id);
           const usertag = userdata ? userdata.user.tag : 'Unknown User';
           let userdatastring = '';
+          let islandstring = '';
           userdatastring += `| **Name**: ${member.name} `;
           if (member.moreinfo) {
             const fc = member.moreinfo.find((u) => u.name === 'Friend Code');
-            userdatastring += fc ? `| **Friend Code**: ${fc.description} ` : '| Friend Code: None ';
+            const is = member.moreinfo.find((u) => u.name === 'Island');
+            islandstring += is ? ` | **Island**: ${is.description} ` : ' No island name ';
+            userdatastring += `${islandstring} ${fc ? `| **Friend Code**: ${fc.description} ` : '| Friend Code: None '}`;
           }
-          matches.push(`> ${usertag} ${userdatastring}`);
+          try {
+          matches.push(`> ${usertag} ${userdatastring} ${member.alts ? ` | Alt: ${member.alts}` : ' | No alt registered.'}`);
+        } catch (err) {
+          console.log(err.stack);
+        }
         }
       }
     });

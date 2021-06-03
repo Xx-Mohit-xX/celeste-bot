@@ -32,6 +32,9 @@ module.exports = {
             embed.addField(info.name, info.description);
           });
         }
+        if (userdata.alts) {
+          embed.addField('Alt Account', userdata.alts);
+        }
         message.channel.send(embed);
       } else {
         message.channel.send('Specified user doesn\'t have any island info!');
