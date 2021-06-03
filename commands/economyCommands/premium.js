@@ -10,7 +10,7 @@ module.exports = {
   execute: async (client, message, config) => {
 
     const msgArr = message.content.split(' ');
-    if (message.author.id !== '620196347890499604') { return message.channel.send('You\'re not allowed to use this command!'); }
+    if (message.author.id !== '620196347890499604' &&  message.author.id !== '391731006958469131' && message.author.id !== '384920723212468225') { return message.channel.send('You\'re not allowed to use this command!'); }
     if (!msgArr[1]) {
       const embed = new Discord.MessageEmbed()
       .setColor('#5b4194')
