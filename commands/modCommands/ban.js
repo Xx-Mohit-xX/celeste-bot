@@ -17,8 +17,9 @@ module.exports = {
     let reason = msgArr.slice(2).join(' ');
     if (!reason) reason = 'No Reason Provided';
 
-    await member.send('You have been banned');
+    await member.send(`You have been banned from ${message.guild} for ${reason}.`);
     await member.ban()
       .catch((error) => message.reply(`There was an error ${message.author}! Error: ${error}`));
+    message.channel.send(`**${member.user.tag} was banned by ${message.author} for ${reason}**`)
   },
 };
