@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
-
+const Discord = require('discord.js');
 module.exports = {
   name: 'warns',
   description: 'display active warns of the user',
@@ -10,6 +10,20 @@ module.exports = {
   permissions: true,
   execute: async (client, message, config) => {
     const msgArr = message.content.split(' ');
+    if (msgArr[1] && msgArr[1].toLowerCase() === 'clear') {
+      if (msgArr[2]) {
+        let clearUser = message.mentions.members.first() || message.guild.members.cache.get(msgArr[2]);
+        if (clearUser) {
+          clear = await client.db.warn.findOneAndDelete({id: clearUser.id, guildID: message.guild.id },
+            {
+          });
+          const embed = new Discord.MessageEmbed()
+          .setColor('GREEN')
+          .setDescription(`All warns cleared for **${clearUser.user.tag}**.`)
+          return message.channel.send({embed: embed})
+        }
+      }
+    }
     let targetUser = message.mentions.members.first() || message.guild.members.cache.get(msgArr[1]);
     const currentDate = Date.now();
     let user;
@@ -23,15 +37,17 @@ module.exports = {
     if (user) {
       if (message.content.includes('!activewarns')) { user.warns = user.warns.filter((warn) => currentDate - warn.date <= config.warnexpiration); }
       if (user.warns.length > 0) {
-        message.channel.send(`**${targetUser}'s Active warnings:**\`\`\`\n\n${user.warns.map((warn, index) => {
+        const embed = new Discord.MessageEmbed()
+        .setDescription(`**${targetUser}'s Active Warnings:**\n\`\`\`\n\n${user.warns.map((warn, index) => {
           const warnDate = new Date(warn.date);
-          return `#${index + 1} - ${warnDate.getUTCMonth() + 1}/${warnDate.getUTCDate()}/${warnDate.getUTCFullYear()} - ${warn.reason}`;
-        }).join('\n')}\`\`\``);
+          return `${index + 1}) at ${warnDate.getUTCMonth() + 1}/${warnDate.getUTCDate()}/${warnDate.getUTCFullYear()} for ${`${(warn.reason.toLowerCase === 'unknown') ? warn.reason : '(reason not specified)'}`}`;
+        }).join('\n')}\`\`\`\n\nTo remove warnings, do **;warns clear <user>**`)
+        message.channel.send({embed: embed})};
       } else {
-        message.channel.send(`**${targetUser} doesn't have any active warnings.**`);
+        const embed = new Discord.MessageEmbed()
+        .setDescription(`**${targetUser} doesn't have any active warnings.**`)
+        .setColor('GREEN')
+        message.channel.send({embed: embed});
       }
-    } else {
-      message.channel.send(`**${targetUser} doesn't have any active warnings.**`);
-    }
   },
 };
