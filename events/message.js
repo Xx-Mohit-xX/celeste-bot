@@ -64,6 +64,34 @@ module.exports = (client, distube, message) => {
 })
 
 }
+  async function checkBoostStatus() {
+    if (!message.member.roles.cache.some(role => role.name === 'Booster')) {
+      if (message.member.roles.cache.some(r => r.id === '819189757208428564')) {
+        message.member.roles.remove('819189757208428564')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819189634382692402')) {
+        message.member.roles.remove('819189634382692402')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819189688925421589')) {
+        message.member.roles.remove('819189688925421589')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819189847503142912')) {
+        message.member.roles.remove('819189847503142912')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819190376581562398')) {
+        message.member.roles.remove('819190376581562398')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819190511574450217')) {
+        message.member.roles.remove('819190511574450217')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819190743495213116')) {
+        message.member.roles.remove('819190743495213116')
+      }
+      if (message.member.roles.cache.some(r => r.id === '819192274549997618')) {
+        message.member.roles.remove('819192274549997618')
+      }
+    }
+  }
   if (message.content.startsWith(config.prefix)) {
     const command = client.commands.get(commandName);
     if (!client.commands.has(commandName)) return;
@@ -92,5 +120,6 @@ module.exports = (client, distube, message) => {
   } else {
     gainExp(client, message, config);
     checkHighlights();
+    checkBoostStatus();
   }
 };
