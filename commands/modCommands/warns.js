@@ -40,7 +40,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
         .setDescription(`**${targetUser}'s Active Warnings:**\n\`\`\`\n\n${user.warns.map((warn, index) => {
           const warnDate = new Date(warn.date);
-          return `${index + 1}) at ${warnDate.getUTCMonth() + 1}/${warnDate.getUTCDate()}/${warnDate.getUTCFullYear()} for **${warn.reason}**.`;
+          return `${index + 1}) at ${warnDate.getUTCMonth() + 1}/${warnDate.getUTCDate()}/${warnDate.getUTCFullYear()} for ${warn.reason}.`;
         }).join('\n')}\`\`\`\n\nTo remove warnings, do **;warns clear <user>**`)
         message.channel.send({embed: embed})};
       } else {
