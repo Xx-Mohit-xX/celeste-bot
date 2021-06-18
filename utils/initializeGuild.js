@@ -4,7 +4,7 @@ module.exports = (client, guildID) => {
     channels: {
       welcomeChannel: null,
     },
-    warnexpiration: 86400000,
+    warnexpiration: 2629800000,
     permissions: {
       moderation: [],
       giveaways: [],
