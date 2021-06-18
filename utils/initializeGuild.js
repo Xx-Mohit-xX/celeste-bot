@@ -7,7 +7,8 @@ module.exports = (client, guildID) => {
     warnexpiration: 86400000,
     permissions: {
       moderation: [],
-      giveaways: []
+      giveaways: [],
+      dj: []
     },
     prefix: ';',
     levels: [

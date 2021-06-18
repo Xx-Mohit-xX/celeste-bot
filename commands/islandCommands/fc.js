@@ -84,14 +84,15 @@ module.exports = {
           });
           if (exists) {
             if (guilddata.moreinfo[0].name === 'roleinfo') {
-              message.member.roles.add(guilddata.moreinfo[0].description);
+              message.member.roles.add(`${guilddata.moreinfo[0].description}`);
             } else if (guilddata.moreinfo[1].name === 'roleinfo') {
-              message.member.roles.add(guilddata.moreinfo[1].description);
+              message.member.roles.add(`${guilddata.moreinfo[1].description}`);
             }
           }
         }
       } catch (err) {
-        console.log(`No role or friend code setting found for server ${message.guild}`)
+        //console.log(`No role or friend code setting found for server ${message.guild}`)
+        console.log(err.stack)
         return;
       }
     } else if (message.mentions.users.first() || client.users.cache.get(msgArr[1]) || message.author) {

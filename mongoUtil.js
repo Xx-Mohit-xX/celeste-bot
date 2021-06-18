@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const { mongodburi } = require('./config.js');
 
 const uri = mongodburi;
-const client = new MongoClient(uri, { useNewUrlParser: true }, {autoIndex: false}, { useUnifiedTopology: true });
+const client = new MongoClient(uri, {autoIndex: false});
 
 module.exports = {
   connectDB: async () => {

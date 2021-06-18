@@ -9,11 +9,12 @@ module.exports = {
     // eslint-disable-next-line max-len
     if (message.author.id !== '620196347890499604' && !message.member.roles.cache.some((r) => config.permissions.moderation.includes(r.id) || message.member.hasPermission(['ADMINISTRATOR']))) { return message.reply('You\'re not allowed to use this command!'); }
     const permissionMessage = config.permissions.moderation.map((perm) => `> ${message.guild.roles.cache.get(perm) || message.guild.members.cache.get(perm) || perm}`).join('\n');
-      const giveawaysMessage = config.permissions.giveaways.map((perm) => `> ${message.guild.roles.cache.get(perm) || message.guild.members.cache.get(perm) || perm}`).join('\n');
+    const giveawaysMessage = config.permissions.giveaways.map((perm) => `> ${message.guild.roles.cache.get(perm) || message.guild.members.cache.get(perm) || perm}`).join('\n');
+    const djrole = config.permissions.dj.map((perm) => `> ${message.guild.roles.cache.get(perm) || message.guild.members.cache.get(perm) || perm}`).join('\n');
     const embed = new MessageEmbed()
       .setTitle('Server Permissions')
       .setThumbnail(`https://cdn.discordapp.com/icons/${message.guild.id}/${message.guild.icon}.png`)
-      .setDescription(`**Moderation**:\n${permissionMessage}\n\n**Giveaways**:\n${giveawaysMessage}`)
+      .setDescription(`**Moderation**:\n${permissionMessage}\n\n**Giveaways**:\n${giveawaysMessage}\n\n**DJ Role**:\n${djrole}`)
       .setFooter(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
       .setTimestamp();
     message.channel.send(embed);
