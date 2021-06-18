@@ -41,7 +41,7 @@ module.exports = {
     if (user.warns.length === 3) {
     targetUser.send(`You have been warned!\nReason: **${reason}**. Please note that this is your third and final warning.`).catch();
   } else if (user.warns.length > 3){
-    if (message.member.bannable && !message.member.roles.cache.some((r) => config.permissions.moderation.includes(r.id))) {
+    if (message.member.kickable) {
       targetUser.send(`You have been banned from **${message.guild.name}** for accumulating 4 warnings. \nThe reason for the ban is **${reason}**. To appeal this ban, please DM **${message.member.user.tag}** directly. Thank you for being a part of our community.`);
       targetUser.ban();
       const embed = new Discord.MessageEmbed()
