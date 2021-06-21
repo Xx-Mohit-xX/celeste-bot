@@ -435,8 +435,128 @@ module.exports = {
         message.channel.send('You don\'t have permission to run this command.');
       }
       // end setrole
+    } else if (msgArr[1].toLowerCase() === 'setlbimage') {
+      // set lb image
+      const msgArr = message.content.split(' ');
+      if (message.author.id !== '620196347890499604' && !message.member.hasPermission(['ADMINISTRATOR'])) { return message.reply('You\'re not allowed to use this command!'); }
+      if (msgArr.length === 2) {
+        const guilddata = await client.db.config.findOne({
+          id: message.guild.id,
+        });
+        if (guilddata.lbimage) {
+          const embed = new Discord.MessageEmbed()
+            .setDescription('Leaderboard background is set to:');
+          try {
+            embed.setImage(guilddata.lbimage);
+          } catch (err) {
+            return message.channel.send('That is not a valid image!')
+          }
+          return message.channel.send({
+            embed: embed
+          });
+        } else {
+          return message.channel.send('No leaderboard background has been set!');
+        }
       }
+      if (msgArr[2].includes('png') || msgArr[2].includes('jpg') || msgArr[2].includes('jpeg')) {
+        config.lbimage = msgArr[2];
+        client.db.config.updateOne({
+          id: message.guild.id
+        }, {
+          $set: {
+            lbimage: msgArr[2],
+          },
+        }, {
+          upsert: true
+        });
+        const embed = new Discord.MessageEmbed()
+          .setColor('#5b4194')
+          .setDescription(`You have successfully set the leaderboard background to:`);
+        try {
+          embed.setImage(msgArr[2]);
+        } catch (err) {
+          return message.channel.send('That is not a valid image!')
+        }
+        message.channel.send({
+          embed: embed
+        });
+      } else if (msgArr[2].toLowerCase() === 'remove') {
+        client.db.config.updateOne({
+          id: message.guild.id
+        }, {
+          $unset: {
+            lbimage: ""
+          }
+        }, {
+          upsert: true
+        });
+        const doneembed = new Discord.MessageEmbed()
+        .setColor('#5b4194')
+        .setDescription('Leaderboard background has been removed!');
+        message.channel.send({embed: doneembed})
+      } else {
+        message.channel.send('You must specify an image url!');
+      }
+      // set lb image end
+    } else if (msgArr[1].toLowerCase() === 'cooldown') {
+      // cooldowns
+      if (!msgArr[3]) {
+        message.channel.send('Configure command cooldown using ;setcooldown <command_name> <duration_in_ms>');
+        return;
+      }
+      const command = client.commands.get(msgArr[2].toLowerCase());
+      if (command) {
+        const duration = parseInt(msgArr[3], 10);
+        if (isNaN(duration)) {
+          message.channel.send('cCnfigure command cooldown using ;setcooldown <command_name> <duration_in_ms>');
+          return;
+        }
+        message.channel.send('Settings have been successfully applied!');
+        if (!config.cooldowns) {
+          config.cooldowns = {};
+        }
+        config.cooldowns[command.name] = duration;
+        await client.db.config.updateOne({ id: message.guild.id }, { $set: { cooldowns: config.cooldowns } }, { upsert: true });
+      } else {
+        message.channel.send('Command not found!');
+      }
+      //end cooldowns
+    } else if (msgArr[1].toLowerCase() === 'togglefc') {
+      if (message.author.id !== '620196347890499604' && !message.member.hasPermission('ADMINISTRATOR')) {
+        return message.channel.send('You do not have permission to run this command!');
+      }
+      if (msgArr[2] === 'true' || msgArr[2] === 'false') {
+        client.db.islandinfo.updateOne(
+          { guildid: message.guild.id },
+          {
+            $set: {
+              friendcoderequirement: msgArr[2],
+            },
+          },
+          { upsert: true },
+        );
+        const embedA = new Discord.MessageEmbed()
+      .setColor('#5b4194')
+      .setDescription(`Friend code requirement has been set to **${msgArr[2]}**!`);
+      message.channel.send({embed: embedA });
 
-    }
+      } else {
+        message.channel.send('You must indicate true / false!');
+      }
+    } else if (msgArr[1].toLowerCase() === 'togglerole') {
+
+      if (!message.member.hasPermission(['ADMINISTRATOR'])) { message.reply('You\'re not allowed to use this command!'); return; }
+      config.togglerole = !config.togglerole;
+      message.channel.send('Level up role toggle has been applied!');
+      await client.db.config.updateOne({ id: message.guild.id }, { $set: { togglerole: config.togglerole } }, { upsert: true });
+
+    } else {
+      const embed = new Discord.MessageEmbed()
+      .setColor('RED')
+      .setDescription('**Configuration not found. Available configurations are:** \neconomy\ntogglerole\ncooldown\ntogglefc\nfcrole\nprefix\ndjperms\nmodperms\ngaperms\nlevellog\npurchaselog\nwelcomechannel\nwelcomeimage\nsetlbimage')
+      return message.channel.send({embed: embed})
+
+  }
+  }
   },
 };
