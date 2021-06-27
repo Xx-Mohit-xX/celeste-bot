@@ -6,10 +6,19 @@ module.exports = {
   usage: 'queue',
   admin: false,
   execute: async (client, message, config, distube) => {
-    const queue = distube.getQueue(message);
-    const embed = new Discord.MessageEmbed()
-    .setColor('#5b4194')
-    .setDescription(`Current queue:\n\n${queue.songs.map((song, id) => `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).slice(0, 10).join('\n')}`)
-    message.channel.send(embed);
+      try {
+      const queue = distube.getQueue(message);
+      const embed = new Discord.MessageEmbed()
+      .setColor('#5b4194')
+      .setDescription(`Current queue:\n\n${queue.songs.map((song, id) => `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``).slice(0, 10).join('\n')}`)
+      message.channel.send(embed);
+    } catch(err) {
+        const fail = new Discord.MessageEmbed()
+        .setColor('RED')
+        .setDescription('There is no active queue!')
+        return message.channel.send(fail)
+    }
+
+
   },
 };

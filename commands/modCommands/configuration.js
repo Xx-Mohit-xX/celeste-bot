@@ -550,10 +550,38 @@ module.exports = {
       message.channel.send('Level up role toggle has been applied!');
       await client.db.config.updateOne({ id: message.guild.id }, { $set: { togglerole: config.togglerole } }, { upsert: true });
 
+    } else if (msgArr[1].toLowerCase() === 'djmode') {
+      //dj on or off start
+      if (msgArr.length >= 1) {
+        const guilddata = await client.db.config.findOne({
+          id: message.guild.id,
+        });
+        if (!msgArr[2]) {
+          return message.channel.send(`DJ mode is set to **${guilddata.djon}**!`);
+        } else {
+          if (msgArr[2].toLowerCase() === 'true' || msgArr[2].toLowerCase() === 'false') {
+            config.djon = msgArr[2];
+            client.db.config.updateOne({ id: message.guild.id }, {
+              $set: {
+                djon: msgArr[2],
+              },
+            }, { upsert: true });
+            const embed = new Discord.MessageEmbed()
+            .setColor('#5b4194')
+            .setDescription(`You have successfully set DJ mode to ${msgArr[2]}!`);
+            message.channel.send({embed: embed});
+          } else if (!guilddata) {
+            return message.channel.send('DJ mode is set to **true**!');
+          } else {
+            message.channel.send('You can only specify true or false!');
+          }
+        }
+      }
+      //dj end
     } else {
       const embed = new Discord.MessageEmbed()
       .setColor('RED')
-      .setDescription('**Configuration not found. Available configurations are:** \neconomy\ntogglerole\ncooldown\ntogglefc\nfcrole\nprefix\ndjperms\nmodperms\ngaperms\nlevellog\npurchaselog\nwelcomechannel\nwelcomeimage\nsetlbimage')
+      .setDescription('**Configuration not found. Available configurations are:** \neconomy\ntogglerole\ncooldown\ntogglefc\nfcrole\nprefix\ndjperms\ndjmode\nmodperms\ngaperms\nlevellog\npurchaselog\nwelcomechannel\nwelcomeimage\nsetlbimage')
       return message.channel.send({embed: embed})
 
   }

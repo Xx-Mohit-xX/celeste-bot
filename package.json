@@ -30,6 +30,7 @@
     "opusscript": "^0.0.8",
     "querystring": "^0.2.1",
     "random-puppy": "^1.1.0",
-    "snekfetch": "^4.0.4"
+    "snekfetch": "^4.0.4",
+    "ytdl-core": "^4.8.3"
   }
 }
