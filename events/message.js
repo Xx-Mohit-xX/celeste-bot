@@ -92,6 +92,16 @@ module.exports = (client, distube, message) => {
       }
     }
   }
+  if (message.content.includes('@everyone') || message.content.includes('@here')) {
+    if (!message.author.id !== '620196347890499604' && !message.member.hasPermission(['BAN_MEMBERS']) && message.member.bannable === true) {
+      message.delete();
+      const everyoneban = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setDescription(`**${message.member.user.tag}** was banned for attempting to mention @here or @everyone.`)
+      message.channel.send({embed: everyoneban});
+      message.member.ban();
+    }
+  }
   if (message.content.startsWith(config.prefix)) {
     const command = client.commands.get(commandName);
     if (!client.commands.has(commandName)) return;
