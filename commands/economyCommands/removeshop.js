@@ -4,7 +4,7 @@ module.exports = {
   aliases: 'shopremove',
   usage: 'removeshop',
   execute: async (client, message, config) => {
-    if (message.author.id !== '620196347890499604' && !message.member.roles.cache.some((r) => config.permissions.moderation.includes(r.id) || message.member.hasPermission(['ADMINISTRATOR']))) { message.reply('You\'re not allowed to use this command!'); return; }
+    if (message.member.id !== '620196347890499604' && !message.member.hasPermission(['ADMINISTRATOR'])) { return message.reply('You\'re not allowed to use this command!');}
     const guilddata = await client.db.config.findOne({
       id: message.guild.id,
     });
