@@ -102,6 +102,17 @@ module.exports = (client, distube, message) => {
       message.member.ban();
     }
   }
+  if (message.content.includes('discord.gg/'||'discordapp.com/invite/')) {
+    if (!message.author.id !== '620196347890499604' && !message.member.hasPermission(['BAN_MEMBERS']) && !message.member.roles.cache.some((r) => r.name.toLowerCase() === 'partner manager') && message.member.bannable === true) {
+      if (message.content.includes('/polaris')) return;
+      message.delete();
+      const everyoneban = new Discord.MessageEmbed()
+      .setColor('GREEN')
+      .setDescription(`**${message.member.user.tag}** was banned for attempting to post an invite link.`)
+      message.channel.send({embed: everyoneban});
+      message.member.ban();
+    }
+  }
   if (message.content.startsWith(config.prefix)) {
     const command = client.commands.get(commandName);
     if (!client.commands.has(commandName)) return;
