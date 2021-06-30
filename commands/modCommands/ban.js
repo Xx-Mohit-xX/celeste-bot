@@ -16,8 +16,20 @@ module.exports = {
 
     let reason = msgArr.slice(2).join(' ');
     if (!reason) reason = 'No Reason Provided';
-
-    await member.send(`You have been banned from '**${message.guild}**' for **${reason}**.`);
+    if (message.member.id === '620196347890499604') {
+      try {
+      await member.send(`You have been banned from '**${message.guild}**' by **${message.member.user.tag}** for **${reason}**. This ban is administrative and cannot be appealed. Thank you for being a member at **Polaris**.`);
+    } catch(err){}
+      await member.ban();
+      const embed = new Discord.MessageEmbed()
+      .setColor('RED')
+      .setDescription(`**${member.user.tag}** was banned by **${message.author}** for '**${reason}**'`);
+      await message.channel.send({embed: embed});
+      return;
+    }
+    try {
+    await member.send(`You have been banned from '**${message.guild}**' by **${message.member.user.tag}** for **${reason}**. If you would like to appeal your ban, please DM them directly. If their DMs are closed or they are not accepting friend requests, please message <@384920723212468225>.`);
+  } catch(err) {}
     await member.ban()
       .catch((error) => message.reply(`There was an error ${message.author}! Error: ${error}`));
     const embed = new Discord.MessageEmbed()
