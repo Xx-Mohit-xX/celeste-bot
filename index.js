@@ -6,7 +6,7 @@ const DisTube = require('distube');
 const { token } = require('./config');
 const distubeListeners = require('./utils/music/distubeListeners');
 
-const client = new Discord.Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER'] });
+const client = new Discord.Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER', 'MESSAGEDELETE'] });
 client.commands = new Discord.Collection();
 
 const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
@@ -22,6 +22,15 @@ client.on('ready', () => {
 });
 client.on('guildMemberAdd', member => { //when someone new joins a guild
     client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' }); //Update the activity every time someone joins a guild
+});
+client.on('messageDelete', messageDelete => {
+  if (messageDelete.member.user.bot || messageDelete.member.id === '620196347890499604' || messageDelete.member.hasPermission(['BAN_MEMBERS'])) return;
+  const embed = new Discord.MessageEmbed()
+  .setColor('#2f3136')
+  .setAuthor(messageDelete.member.user.tag, messageDelete.member.user.avatarURL())
+  .setTitle('Message Deleted!')
+  .setDescription(`${messageDelete.content}`)
+  messageDelete.channel.send({embed: embed})
 });
 
 const importAllFiles = (dir) => {
