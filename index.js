@@ -24,7 +24,9 @@ client.on('guildMemberAdd', member => { //when someone new joins a guild
     client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' }); //Update the activity every time someone joins a guild
 });
 client.on('messageDelete', messageDelete => {
-  if (messageDelete.member.hasPermission(['BAN_MEMBERS'])) return;
+  if (messageDelete.author.hasPermission(['BAN_MEMBERS'])) {
+    return;
+  }
   const embed = new Discord.MessageEmbed()
   .setColor('#2f3136')
   .setAuthor(messageDelete.member.user.tag, messageDelete.member.user.avatarURL())
