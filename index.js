@@ -31,12 +31,14 @@ client.on('messageDelete', messageDelete => {
 } catch(err) {
   console.log(err.stack)
 }
+try {
   const embed = new Discord.MessageEmbed()
   .setColor('#2f3136')
   .setAuthor(messageDelete.member.user.tag, messageDelete.member.user.avatarURL())
   .setTitle('Message Deleted!')
   .setDescription(`${messageDelete.content}`)
   messageDelete.channel.send({embed: embed})
+} catch(err) {console.log(err.stack)}
 });
 
 const importAllFiles = (dir) => {
