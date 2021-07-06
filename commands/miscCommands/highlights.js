@@ -34,7 +34,6 @@ module.exports = {
         message.channel.send({embed: embed});
 
     } else if (msgArr[1] === 'remove') {
-      config.channels.welcomeChannel = '';
       await client.db.userdata.updateOne({ id: message.member.id, guildID: message.guild.id }, {
         $pull: {
           highlightList: msgArr.slice(2).join(' ')
