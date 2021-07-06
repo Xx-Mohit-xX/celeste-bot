@@ -23,14 +23,12 @@ client.on('ready', () => {
 client.on('guildMemberAdd', newMember => { //when someone new joins a guild
     client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' }); //Update the activity every time someone joins a guild
     try {
-    console.log(newMember.user.avatarURL);
-    console.log(newMember.user.displayAvatarURL);
-    if ((Date.now() - newMember.user.createdAt < 1000*60*60*24*7) && newMember.user.displayAvatarURL.includes('0.png')) {
+    if ((Date.now() - newMember.user.createdAt < 1000*60*60*24*7) && newMember.user.displayAvatarURL() === 'https://cdn.discordapp.com/embed/avatars/0.png') {
       const newMemberBan = new Discord.MessageEmbed()
       .setColor('RED')
-      .setDescription('Your account has been kicked from Polaris as it is too new. Please come back when your account is more than 10 days old.')
+      .setDescription('Your account has been kicked from Polaris as it is too new. Please come back when your account is more than 7 days old or you have changed your profile picture.')
       .setTimestamp();
-      newMember.send({embed: newMemberBan})
+      newMember.send({embed: newMemberBan});
     newMember.kick();
     }
   } catch(err) {
