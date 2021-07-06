@@ -10,8 +10,8 @@ module.exports = async (client, distube, member) => {
       console.log(error.stack);
     });
   }
-
   const currentDate = Date.now();
+
 
   const mute = await client.db.mute.findOne({ id: member.id });
   if (mute) {
