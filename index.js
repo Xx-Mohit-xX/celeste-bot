@@ -37,7 +37,7 @@ client.on('guildMemberAdd', newMember => { //when someone new joins a guild
 });
 client.on('messageDelete', messageDelete => {
   try {
-  if (messageDelete.member.hasPermission('MANAGE_MESSAGES')) {
+  if (messageDelete.member.user.bot || messageDelete.member.hasPermission('MANAGE_MESSAGES')) {
     return;
   }
 } catch(err) {
