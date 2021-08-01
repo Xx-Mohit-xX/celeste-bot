@@ -36,8 +36,9 @@ client.on('guildMemberAdd', newMember => { //when someone new joins a guild
   }
 });
 client.on('messageDelete', messageDelete => {
+  let mlog = client.db.islandinfo.findOne({ guildid: messageDelete.guild.id  });
   try {
-  if (messageDelete.member.user.bot || messageDelete.member.hasPermission('MANAGE_MESSAGES')) {
+  if (messageDelete.member.user.bot || messageDelete.member.hasPermission('MANAGE_MESSAGES') || mlog.messagelog === 'false') {
     return;
   }
 } catch(err) {
