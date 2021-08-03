@@ -65,7 +65,7 @@ module.exports = (client, distube, message) => {
 
 }
   async function checkBoostStatus() {
-    if (!message.member.roles.cache.some(role => role.name === 'Booster')) {
+    if (!message.member.roles.cache.some(role => role.name === 'Booster') && !message.member.roles.cache.some(role => role.name === 'Supporter')) {
       if (message.member.roles.cache.some(r => r.id === '819189757208428564')) {
         message.member.roles.remove('819189757208428564')
       }
