@@ -8,7 +8,7 @@ module.exports = {
   execute: async (client, message, config, distube) => {
     const msgArr = message.content.split(' ').slice(1);
 
-    if (!message.author.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have permission to run that command!')
+    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have permission to run that command!')
    const hasEmoteRegex = /<a?:.+:\d+>/gm
    const emoteRegex = /<:.+:(\d+)>/gm
    const animatedEmoteRegex = /<a:.+:(\d+)>/gm
