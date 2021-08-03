@@ -23,7 +23,7 @@ client.on('ready', () => {
 client.on('guildMemberAdd', newMember => { //when someone new joins a guild
     client.user.setActivity(`${client.users.cache.size} users | ;help`, { type: 'LISTENING' }); //Update the activity every time someone joins a guild
     try {
-    if ((Date.now() - newMember.user.createdAt < 1000*60*60*24*7) && newMember.user.displayAvatarURL() === 'https://cdn.discordapp.com/embed/avatars/0.png') {
+    if ((Date.now() - newMember.user.createdAt < 1000*60*60*24*30) && newMember.user.displayAvatarURL() === 'https://cdn.discordapp.com/embed/avatars/0.png') {
       const newMemberBan = new Discord.MessageEmbed()
       .setColor('RED')
       .setDescription('Your account has been kicked from Polaris as it is too new. Please come back when your account is more than 7 days old or you have changed your profile picture.')
@@ -38,6 +38,7 @@ client.on('guildMemberAdd', newMember => { //when someone new joins a guild
 client.on('messageDelete', messageDelete => {
   let mlog = client.db.islandinfo.findOne({ guildid: messageDelete.guild.id  });
   try {
+  if (messageDelete.guild.id = '713843260744925234') return;
   if (messageDelete.member.user.bot || messageDelete.member.hasPermission('MANAGE_MESSAGES') || mlog.messagelog === 'false') {
     return;
   }
