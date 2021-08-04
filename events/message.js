@@ -65,6 +65,7 @@ module.exports = (client, distube, message) => {
 
 }
   async function checkBoostStatus() {
+    try {
     if (!message.member.roles.cache.some(role => role.name === 'Booster')) {
       if (message.member.roles.cache.some(r => r.id === '819189757208428564')) {
         message.member.roles.remove('819189757208428564')
@@ -91,6 +92,9 @@ module.exports = (client, distube, message) => {
         message.member.roles.remove('819192274549997618')
       }
     }
+  } catch(err) {
+  
+  }
   }
   if (message.content.includes('@everyone') || message.content.includes('@here')) {
     if (!message.author.id !== '620196347890499604' && !message.member.hasPermission(['BAN_MEMBERS']) && message.member.bannable === true) {
@@ -140,7 +144,11 @@ module.exports = (client, distube, message) => {
     }
   } else {
     gainExp(client, message, config);
+    try {
     checkHighlights();
     checkBoostStatus();
+  } catch(err) {
+    console.log('something went wrong with boost status')
+  }
   }
 };
