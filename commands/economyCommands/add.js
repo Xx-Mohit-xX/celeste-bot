@@ -23,18 +23,19 @@ module.exports = {
       return;
     }
     if (msgArr[1] === 'premium') {
-      let target = 'premium users'
+      target = 'premium users'
+      let i = 0;
       const user = await client.db.islandinfo.find().toArray()
-      message.channel.send(user.length)
       async function complete() {
         const embed = new Discord.MessageEmbed()
         .setColor('GREEN')
-        .setDescription(`✅ ${message.author} gave ${target} ${amount} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
+        .setDescription(`✅ ${message.author} gave ${i} ${target} ${amount} ${guilddata.currencyname ? guilddata.currencyname : 'Bells'}!`);
         message.channel.send({embed: embed})
       }
       function addPremium(amt) {
         user.forEach(check => {
           if (check.hasPremium === 'true') {
+            i ++;
             console.log(check.id)
            client.db.userdata.updateOne({id: check.id, guildID: message.guild.id}, {$inc: {coins: amount}}, {upsert: true})
           }
