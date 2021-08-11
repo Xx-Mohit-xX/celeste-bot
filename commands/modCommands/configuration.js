@@ -521,7 +521,7 @@ module.exports = {
         message.channel.send('Command not found!');
       }
       //end cooldowns
-    } else if (msgArr[1].toLowerCase() === 'togglefc') {
+    } else if (msgArr[1].toLowerCase() === 'requirefc') {
       if (message.author.id !== '620196347890499604' && !message.member.hasPermission('ADMINISTRATOR')) {
         return message.channel.send('You do not have permission to run this command!');
       }
@@ -578,6 +578,28 @@ module.exports = {
         }
       }
       //dj end
+    }  else if (msgArr[1].toLowerCase() === 'messagelog') {
+        if (message.author.id !== '620196347890499604' && !message.member.hasPermission('ADMINISTRATOR')) {
+          return message.channel.send('You do not have permission to run this command!');
+        }
+        if (msgArr[2] === 'true' || msgArr[2] === 'false') {
+          client.db.islandinfo.updateOne(
+            { guildid: message.guild.id },
+            {
+              $set: {
+                messagelog: msgArr[2],
+              },
+            },
+            { upsert: true },
+          );
+          const embedA = new Discord.MessageEmbed()
+        .setColor('#5b4194')
+        .setDescription(`Message deletion log has been set to **${msgArr[2]}**!`);
+        message.channel.send({embed: embedA });
+
+        } else {
+          message.channel.send('You must indicate true / false!');
+        }
     } else {
       const embed = new Discord.MessageEmbed()
       .setColor('RED')
