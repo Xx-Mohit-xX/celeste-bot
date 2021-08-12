@@ -34,11 +34,12 @@ module.exports = {
       }
       function addPremium(amt) {
         user.forEach(check => {
+          try {
           if (check.hasPremium === 'true') {
             i ++;
             console.log(check.id)
            client.db.userdata.updateOne({id: check.id, guildID: message.guild.id}, {$inc: {coins: amount}}, {upsert: true})
-          }
+         } } catch(err) {}
         })
       }
       addPremium(amount)
