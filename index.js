@@ -1,17 +1,12 @@
 // This is the starting point of the bot
 const Discord = require('discord.js');
 const fs = require('fs');
-const DisTube = require('distube');
 
 const { token } = require('./config');
-const distubeListeners = require('./utils/music/distubeListeners');
 
-const client = new Discord.Client({ partials: ['GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION', 'USER'] });
+const client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS]}, {partials: ['GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'] });
 client.commands = new Discord.Collection();
 
-const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
-const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || 'Off'}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? 'All Queue' : 'This Song' : 'Off'}\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
-distubeListeners(distube, status);
 
 client.on('ready', () => {
   client.guilds.cache.forEach((server) => {
@@ -82,7 +77,7 @@ fs.readdir('./events/', (err, files) => {
     const evt = require(`./events/${file}`);
     const evtName = file.split('.')[0];
     console.log(`Event: ${evtName} loaded!`);
-    client.on(evtName, (...args) => evt(client, distube, ...args));
+    client.on(evtName, (...args) => evt(client, ...args));
   });
 });
 

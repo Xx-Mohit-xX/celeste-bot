@@ -2,12 +2,15 @@ const { MongoClient } = require('mongodb');
 const { mongodburi } = require('./config.js');
 
 const uri = mongodburi;
-const client = new MongoClient(uri, {autoIndex: false});
+const client = new MongoClient;
 
 module.exports = {
   connectDB: async () => {
-    await client.connect();
+    await client.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, autoIndex: false}).then(
+      () => {
     console.log('mongoDB is now connected!');
-    return client;
+    return client;},
+    err => {console.log('There was an error');}
+  )
   },
 };

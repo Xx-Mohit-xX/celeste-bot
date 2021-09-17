@@ -1,12 +1,11 @@
 const Discord = require('discord.js');
-const { getTracks, getPreview } = require("spotify-url-info")
 module.exports = {
   name: 'stonks',
   description: 'Play music',
   aliases: 'turnips',
   usage: 'play <music name>',
   admin: false,
-  execute: async (client, message, config, distube) => {
+  execute: async (client, message, config) => {
     const msgArr = message.content.split(' ');
     const embed = new Discord.MessageEmbed()
     .setAuthor('HOW TO')
