@@ -3,11 +3,11 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable max-len */
-const mongoUtil = require('../mongoUtil.js');
+const { connectDB } = require('../mongoUtil.js');
 const config = require('../config.js');
 
 module.exports = async (client) => {
-  const db = await mongoUtil.connectDB();
+  const db = await connectDB('mongoose');
   client.db = {};
   client.db.userdata = await db.db().collection(config.collection.userdata);
   client.db.warn = await db.db().collection(config.collection.warn);

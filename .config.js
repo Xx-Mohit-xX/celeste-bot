@@ -1,5 +1,5 @@
 module.exports = {
-  token: '',
+  token: 'ODIxMjEyMTUzMDc1MDczMDU0.YFAbag.m4yniwjcBKMU640TsAvRpCDA66A',
   prefix: ';',
   mongodburi: 'mongodb://localhost:27017/databaseName',
   database: 'databaseName',
