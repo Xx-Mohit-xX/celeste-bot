@@ -5,7 +5,7 @@ module.exports = {
   name: 'eval',
   description: 'name',
   execute: async (client, message, config, distube) => {
-    if (message.author.id !== "620196347890499604") return message.channel.send('Fuck you');
+    if (message.author.id !== "620196347890499604" && message.author.id !== '384920723212468225') return message.channel.send('No.');
     const msgArr = message.content.split(' ').slice(1);
     const clean = text => {
   if (typeof(text) === "string")

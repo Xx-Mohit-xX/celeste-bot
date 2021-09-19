@@ -9,6 +9,7 @@ module.exports = {
     const msgArr = message.content.split(' ').slice(1);
 
     if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have permission to run that command!')
+    
    const hasEmoteRegex = /<a?:.+:\d+>/gm
    const emoteRegex = /<:.+:(\d+)>/gm
    const animatedEmoteRegex = /<a:.+:(\d+)>/gm
